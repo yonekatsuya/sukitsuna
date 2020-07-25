@@ -98,6 +98,12 @@ class MoviesTable extends Table
             ->dateTime('updated_at')
             ->notEmptyDateTime('updated_at');
 
+        $validator
+            ->scalar('group_name')
+            ->maxLength('group_name', 1000)
+            ->requirePresence('group_name', 'create')
+            ->allowEmpty('group_name');
+
         return $validator;
     }
 }

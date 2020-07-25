@@ -15,7 +15,7 @@ class MoviesTableTest extends TestCase
      *
      * @var \App\Model\Table\MoviesTable
      */
-    public $Movies;
+    public $MoviesTable;
 
     /**
      * Fixtures
@@ -35,7 +35,7 @@ class MoviesTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('Movies') ? [] : ['className' => MoviesTable::class];
-        $this->Movies = TableRegistry::getTableLocator()->get('Movies', $config);
+        $this->MoviesTable = TableRegistry::getTableLocator()->get('Movies', $config);
     }
 
     /**
@@ -45,28 +45,16 @@ class MoviesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Movies);
+        unset($this->MoviesTable);
 
         parent::tearDown();
     }
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testMoviesTableFind() {
+        $result = $this->MoviesTable->find('all')->first();
+        $this->assertFalse(empty($result));
+        $this->assertTrue(is_a($result,'App\Model\Entity\Movie'));
+        $this->assertEquals($result->id,1);
+        $this->assertStringStartsWith('this is',$result->description);
     }
 }
