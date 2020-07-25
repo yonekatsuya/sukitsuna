@@ -76,11 +76,6 @@ try {
     exit($e->getMessage() . "\n");
 }
 
-if (file_exists(__DIR__ . DS . '.env')) {
-    $dotEnv = new Dotenv\Dotenv(__DIR__);
-    $dotEnv->load();
-}
-
 /*
  * Load an environment local configuration file.
  * You can use a file like app_local.php to provide local overrides to your
