@@ -1,24 +1,11 @@
-machine:
-  php:
-    version: 7.0.11
-  services:
-    - mysql
-  environment:
-    DEBUG: true
-    DATABASE_URL: "mysql://sukitsuna:root@localhost/${APP_NAME}?encoding=utf8&timezone=UTC&cacheMetadata=true&quoteIdentifiers=false&persistent=false"
-    DATABASE_TEST_URL: "mysql://test_sukitsuna:root@localhost/test_${APP_NAME}?encoding=utf8&timezone=UTC&cacheMetadata=true&quoteIdentifiers=false&persistent=false"
-dependencies:
-  cache_directories:
-    - ~/.composer/cache
-  pre:
-    - composer config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
-  override:
-    - composer install --dev --no-interaction
-  post:
-    - mysql -u root -e "CREATE DATABASE sukitsuna CHARSET utf8;"
-    - mysql -u root -e "CREATE DATABASE test_sukitsuna CHARSET utf8;"
-    - bin/cake migrations migrate
-test:
-  override:
-    - mkdir -p $CIRCLE_TEST_REPORTS/phpunit
-    - vendor/bin/phpunit --configuration phpunit.xml.dist --log-junit $CIRCLE_TEST_REPORTS/phpunit/junit.xml
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.3-node-browsers
+    steps:
+      - checkout
+      - run: composer install -n --prefer-dist
+      - run:
+          name: php test
+          command: ./vendor/bin/phpunit
