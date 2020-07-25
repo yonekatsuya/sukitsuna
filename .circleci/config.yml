@@ -3,6 +3,21 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-node-browsers
+          environment:
+          DEBUG: true
+          DATABASE_URL: "mysql://sukitsuna:root@localhost/${APP_NAME}?encoding=utf8&timezone=UTC&cacheMetadata=true&quoteIdentifiers=false&persistent=false"
+          DATABASE_TEST_URL: "mysql://test_sukitsuna:root@localhost/test_${APP_NAME}?encoding=utf8&timezone=UTC&cacheMetadata=true&quoteIdentifiers=false&persistent=false"
+      - image: circleci/mysql:8.0
+        command: mysqld  --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+        environment:
+          MYSQL_DATABASE: test_sukitsuna
+          MYSQL_ROOT_PASSWORD: root
     steps:
       - checkout
       - run: composer install -n --prefer-dist
+      - run:
+        name: Initialize Database
+        command: bin/cake migrations migrate
+      - run:
+          name: php test
+          command: ./vendor/bin/phpunit
