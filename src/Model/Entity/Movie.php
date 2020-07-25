@@ -40,5 +40,6 @@ class Movie extends Entity
         'comment_count' => true,
         'created_at' => true,
         'updated_at' => true,
+        'group_name' => true,
     ];
 }

@@ -1,7 +1,15 @@
+body {
+  background-color: #fff8dc;
+}
+
 header {
   height: 60px;
   font-size: 22px;
   font-weight: bold;
+}
+
+.header-logo:hover {
+  opacity: 0.7;
 }
 
 .a-none {
@@ -20,6 +28,7 @@ header {
   right: -30%;
   height: 100vh;
   width: 20vw;
+  background-color: #f1f1f1;
 }
 
 .search-side-content {
@@ -40,6 +49,44 @@ header {
   cursor: pointer;
 }
 
+.search-side .title {
+  border-bottom: 3px solid #f0e68c;
+}
+
+.search-side .group-item {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.search-side .group-item input {
+  display: inline-block;
+  height: 16px;
+  width: 16px; 
+}
+
+.search-side .group-item input:hover, .search-side .group-item label:hover {
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.search-side .group-item label {
+  margin-left: 10px;
+}
+
+.group-set {
+  border-bottom: 3px solid #f0e68c;
+}
+
+.other-set label input {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.other-set label:hover, .other-set label input:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .scroll-btn {
   height: 80px;
   width: 80px;
@@ -48,13 +95,40 @@ header {
   right: 2%;
   border-radius: 10px;
   font-size: 30px;
+  background-color: #84ffc1;
 }
 
 .scroll-btn:hover {
-  opacity: 0.7;
   cursor: pointer;
+  color: white;
+}
+
+/* 動画エリア */
+.movie-area {
+  background-color: #ffffc6;
+}
+
+/* 「好き」と「好き一覧」ボタン */
+.like-btn, .like-index-btn {
+  width: 150px;
+  border-radius: 10px;
+}
+
+.like-btn:hover {
+  background-color: #fff;
+  color: #17a2b8;
+}
+
+.like-index-btn:hover {
+  background-color: #212529;
+  color: #ffc107;
+}
+
+.movie-title-description {
+  overflow: scroll;
 }
 
 footer {
   height: 30px;
+  background-color: #f5f5f5;
 }

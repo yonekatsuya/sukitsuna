@@ -11,17 +11,25 @@ class MoviesController extends AppController {
 
   public function store() {
     $movie = $this->Movies->newEntity();
-    $movie->link = $this->request->data('link');
-    $movie->title = $this->request->data('title');
-    $movie->description = $this->request->data('description');
-    $movie->channel_title = $this->request->data('channelTitle');
-    $movie->view_count = $this->request->data('viewCount');
-    $movie->like_count = $this->request->data('likeCount');
-    $movie->dislike_count = $this->request->data('dislikeCount');
-    $movie->comment_count = $this->request->data('commentCount');
+    $movie->link = $this->request->getData('link');
+    $movie->title = $this->request->getData('title');
+    $movie->description = $this->request->getData('description');
+    $movie->channel_title = $this->request->getData('channelTitle');
+    $movie->view_count = $this->request->getData('viewCount');
+    $movie->like_count = $this->request->getData('likeCount');
+    $movie->dislike_count = $this->request->getData('dislikeCount');
+    $movie->comment_count = $this->request->getData('commentCount');
+    $movie->group_name = $this->request->getData('groupName');
 
     if ($this->Movies->save($movie)) {
       $this->log('ok');
     }
+  }
+
+  public function delete() {
+    $id = $this->request->getData('movie-delete-hidden');
+    $movie = $this->Movies->get($id);
+    $this->Movies->delete($movie);
+    $this->redirect(['controller'=>'Top','action'=>'index']);
   }
 }
