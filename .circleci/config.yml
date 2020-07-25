@@ -6,6 +6,3 @@ jobs:
     steps:
       - checkout
       - run: composer install -n --prefer-dist
-      - run:
-          name: php test
-          # command: ./vendor/bin/phpunit
