@@ -34,7 +34,7 @@
               </div>
             </div>
 
-            <button class="btn btn-primary mx-2">登録/ログイン</button>
+            <button class="btn btn-primary mx-2 header-register-login">登録/ログイン</button>
           </div>
         </div>
       </div>

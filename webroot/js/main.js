@@ -194,4 +194,24 @@ $(function() {
     }
   });
 
+
+  // ヘッダーの「登録/ログイン」ボタン押下時にモーダルを表示する
+  $(document).on('click','.header-register-login',function() {
+    $('.register-login-modal').animate({
+      top: 0
+    },300);
+    $('.register-login-modal-content').animate({
+      top: '50%'
+    },300);
+  });
+
+  $(document).on('click','.register-login-modal-content .close',function() {
+    $('.register-login-modal').animate({
+      top: '-100%'
+    },300);
+    $('.register-login-modal-content').animate({
+      top: '-50%'
+    },300);
+  });
+
 });
