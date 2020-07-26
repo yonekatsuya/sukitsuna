@@ -32,6 +32,8 @@ class MoviesTable extends Table
 
         $this->setTable('movies');
         $this->setPrimaryKey('id');
+
+        $this->belongsToMany('Users');
     }
 
     /**

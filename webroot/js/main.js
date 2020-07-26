@@ -214,4 +214,74 @@ $(function() {
     },300);
   });
 
+  // ヘッダーのプロフィール画像押下時の処理（2回連続のクリックイベント）
+  $(document).one('click','.header-profile',function() {
+    $(this).trigger('click');
+  });
+
+  // ヘッダーの「プロフィール」押下時の処理
+  $(document).on('click','.header-profile-btn',function() {
+    $('.user-profile-modal').animate({
+      left: 0
+    },500);
+  });
+
+  $(document).on('click','.user-profile-modal .close',function() {
+    $('.user-profile-modal').animate({
+      left: '-100%'
+    },300);
+  })
+
+
+  // 動画の「好き」ボタン押下時の処理（ログイン時のみ処理を走らせる）
+  $(document).on('click','.movie-area .like-btn',function() {
+    // ログインしていなければ、処理を中断する
+    if (!$('.hidden-login-id').length) {
+      return
+    }
+
+    var userId = $('.hidden-login-id').val();
+    var movieId = $(this).parent().find('input').val();
+
+    if ($(this).hasClass('btn-info')) {
+      // 表示切り替え
+      $(this).removeClass('btn-info')
+             .addClass('unlike-btn')
+             .text('好き解除');
+
+      $.ajax({
+        type: 'post',
+        url: 'http://localhost:8888/sukitsuna/usersmovies/store',
+        dataType: 'text',
+        data: {
+          userId: userId,
+          movieId: movieId
+        }
+      }).done(function(response) {
+        console.log('ok');
+      }).fail(function(response) {
+        console.log('ng');
+      });
+    } else {
+      $(this).addClass('btn-info')
+             .removeClass('unlike-btn')
+             .text('好き');
+      
+      $.ajax({
+        type: 'post',
+        url: 'http://localhost:8888/sukitsuna/usersmovies/delete',
+        dataType: 'text',
+        data: {
+          userId: userId,
+          movieId: movieId
+        }
+      }).done(function(response) {
+        console.log('ok');
+      }).fail(function(response) {
+        console.log('ng');
+      });
+    }
+
+  });
+
 });

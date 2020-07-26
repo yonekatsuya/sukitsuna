@@ -35,8 +35,10 @@ class UsersController extends AppController {
     $user_info = $user_connect->get('account/verify_credentials');
     // 「$user_info」に、Twitterアカウントの情報が収められている。
 
+    // ユーザー情報を取得する。登録済みであればユーザー情報が返ってきて、未登録であればnull値が返ってくる
     $user = $this->Users->find()->where(['uniqueid'=>$user_info->id]);
     
+    // TwitterAPIから取得したユーザーが、既に一度登録済みかどうかを判定
     if ($user) {
       // 対象レコードを取得する
       $user = $this->Users->find()->where(['uniqueid'=>$user_info->id])->toArray()[0];
@@ -83,4 +85,11 @@ class UsersController extends AppController {
 
     return $this->redirect(['controller'=>'top','action'=>'index']);
   }
+
+  public function delete() {
+    $_SESSION = [];
+    session_destroy();
+    return $this->redirect(['controller'=>'top','action'=>'index']);
+  }
+
 }

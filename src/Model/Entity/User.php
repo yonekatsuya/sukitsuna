@@ -44,6 +44,7 @@ class User extends Entity
         'favourites_count' => true,
         'profile_image_url' => true,
         'created_at' => true,
-        'updated_at' => true
+        'updated_at' => true,
+        'movies' => true
     ];
 }
