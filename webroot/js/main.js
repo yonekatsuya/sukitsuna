@@ -224,8 +224,44 @@ $(function() {
     $('.user-profile-modal').animate({
       left: 0
     },500);
+
+    var userId = $('.hidden-login-id').val();
+
+    $.ajax({
+      type: 'get',
+      url: 'http://localhost:8888/sukitsuna/usersmovies/loginuserlikemovies',
+      dataType: 'json',
+      data: {
+        userId: userId
+      }
+    }).done(function(response) {
+
+      $('.login-user-like-movie-dom').text('');
+
+      response.forEach(function(movie) {
+        var html = '<div class="row p-3 mb-3 profile-movie-area"><div class="col-7 d-flex align-items-center"><p class="mt-4">' + movie.link + '</p></div><div class="col-5"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">説明欄</p><p class="profile-description">' + movie.description + '</p></div><div class="row justify-content-around">';
+
+        var likeMovies = $('.hidden-login_user-like-movies').val();
+        likeMovies = likeMovies.split(',');
+        
+        if (likeMovies.indexOf(movie.id)) {
+          html += '<button class="btn p-3 like-btn unlike-btn">好き解除</button>';
+        } else {
+          html += '<button class="btn btn-info p-3 like-btn">好き</button>';
+        }
+
+        html += '<button class="btn btn-warning p-3 like-index-btn">好き一覧</button><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
+        
+        $('.login-user-like-movie-dom').append(html);
+      })
+
+    }).fail(function(response) {
+      console.log('error');
+      console.log(response);
+    });
   });
 
+  // プロフィールモーダルの閉じるボタン押下時の処理
   $(document).on('click','.user-profile-modal .close',function() {
     $('.user-profile-modal').animate({
       left: '-100%'
@@ -234,7 +270,7 @@ $(function() {
 
 
   // 動画の「好き」ボタン押下時の処理（ログイン時のみ処理を走らせる）
-  $(document).on('click','.movie-area .like-btn',function() {
+  $(document).on('click','.movie-area .like-btn, .profile-movie-area .like-btn',function() {
     // ログインしていなければ、処理を中断する
     if (!$('.hidden-login-id').length) {
       return
