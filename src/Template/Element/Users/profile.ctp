@@ -48,7 +48,8 @@
           <h2 class="font-weight-bold">好き動画一覧（30件）</h2>
         </div>
 
-        
+        <div class="login-user-like-movie-dom"></div>
+
       </div>
     </div>
   </div>

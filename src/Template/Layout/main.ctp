@@ -21,6 +21,8 @@
 <body>
   <?php if (isset($_SESSION['name'])) : ?>
     <input type="hidden" class="hidden-login-id" value="<?= $_SESSION['uniqueid'] ?>">
+    <?php $login_user_like_movies_string = implode(',',$login_user_like_movies) ?>
+    <input type="hidden" class="hidden-login_user-like-movies" value="<?= $login_user_like_movies_string ?>">
   <?php endif; ?>
 
   <?= $this->element('Top/header') ?>
@@ -40,7 +42,9 @@
 
   <?= $this->element('Top/registerLogin') ?>
 
-  <?= $this->element('Users/profile') ?>
+  <?php if (isset($_SESSION['name'])) : ?>
+    <?= $this->element('Users/profile') ?>
+  <?php endif; ?>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

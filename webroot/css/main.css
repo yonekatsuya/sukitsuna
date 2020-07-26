@@ -104,7 +104,7 @@ header {
 }
 
 /* 動画エリア */
-.movie-area {
+.movie-area, .profile-movie-area {
   background-color: #ffffc6;
 }
 
@@ -122,7 +122,7 @@ header {
   font-weight: bold;
 }
 
-.movie-title-description {
+.movie-title-description, .profile-movie-title-description {
   overflow: scroll;
 }
 
