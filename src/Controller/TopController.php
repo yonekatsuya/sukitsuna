@@ -7,6 +7,7 @@ use Cake\ORM\TableRegistry;
 class TopController extends AppController {
   public function initialize() {
     $this->name = 'Top';
+    session_start();
     $this->viewBuilder()->setLayout('Main');
     parent::initialize();
     $this->Movies = TableRegistry::get('movies');

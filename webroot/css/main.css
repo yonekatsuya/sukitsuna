@@ -128,6 +128,65 @@ header {
   overflow: scroll;
 }
 
+/* 「登録/ログイン」ボタン押下時に表示されるモーダル */
+.register-login-modal {
+  position: fixed;
+  top: -100%;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #000000;
+  opacity: 0.5;
+}
+
+.register-login-modal-content {
+  position: fixed;
+  top: -50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: white;
+  height: 50vh;
+  width: 20vw;
+}
+
+.register-login-modal-content .close {
+  position: absolute;
+  top: -10%;
+  right: -8%;
+  font-size: 80px;
+}
+
+.register-login-modal-content .close:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.register-login-modal-content .content {
+  height: 90%;
+  width: 80%;
+}
+
+.register-login-modal-content .content .title {
+  height: 30%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.register-login-modal-content .content .logo {
+  height: 40%;
+  font-size: 120px;
+}
+
+.register-login-modal-content .content .button {
+  height: 30%;
+  font-weight: bold;
+}
+
+.register-login-modal-content .content .button a {
+  border-radius: 20px;
+}
+
 footer {
   height: 30px;
   background-color: #f5f5f5;
