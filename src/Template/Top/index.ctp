@@ -35,10 +35,14 @@
         <p><?= $movie->description ?></p>
       </div>
       <div class="row justify-content-around">
-        <button class="btn btn-info p-3 like-btn">好き</button>
+        <?php if (!in_array($movie->id,$login_user_like_movies)) : ?>
+          <button class="btn btn-info p-3 like-btn">好き</button>
+        <?php else : ?>
+          <button class="btn p-3 like-btn unlike-btn">好き解除</button>
+        <?php endif; ?>
         <button class="btn btn-warning p-3 like-index-btn">好き一覧</button>
-        <!-- <input type="hidden" class="hidden" value="<?= $movie->id ?>">
-        <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
+        <input type="hidden" class="hidden" value="<?= $movie->id ?>">
+        <!-- <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
       </div>
     </div>
   </div>

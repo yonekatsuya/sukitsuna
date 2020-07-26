@@ -11,12 +11,26 @@ class TopController extends AppController {
     $this->viewBuilder()->setLayout('Main');
     parent::initialize();
     $this->Movies = TableRegistry::get('movies');
+    $this->UsersMovies = TableRegistry::get('users_movies');
     $this->loadComponent('Paginator');
     $this->paginate = [
       'limit' => 5,
       'order' => ['view_count'=>'desc'],
     ];
     $this->set('movie',$this->Movies->newEntity());
+
+    // ログインユーザーが好き登録している動画一覧を取得する（「好き」ボタンの表示切り替えに使用）
+    if (isset($_SESSION['name'])) {
+      $login_id = $_SESSION['uniqueid'];
+      $entities = $this->UsersMovies->find()->where(['user_uniqueid'=>$login_id])->select(['movie_id'])->all()->toArray();
+      $login_user_like_movies = [];
+      foreach ($entities as $item) {
+        $login_user_like_movies[] = $item->movie_id;
+      }
+      $this->set('login_user_like_movies',$login_user_like_movies);
+    } else {
+      $this->set('login_user_like_movies',[]);
+    }
   }
 
   public function index() {

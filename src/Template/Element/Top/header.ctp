@@ -34,7 +34,17 @@
               </div>
             </div>
 
-            <button class="btn btn-primary mx-2 header-register-login">登録/ログイン</button>
+            <?php if (isset($_SESSION['name'])) : ?>
+              <div class="dropdown">
+                <?= $this->Html->image($_SESSION['profile_image_url'],['class'=>'header-profile dropdown-toggle','width'=>40,'alt'=>'プロフィール画像','data-toggle'=>'dropdown']) ?>
+                <div class="dropdown-menu">
+                  <?= $this->Html->link('プロフィール','#',['class'=>'dropdown-item header-profile-btn']) ?>
+                  <?= $this->Html->link('ログアウト','#',['class'=>'dropdown-item','data-toggle'=>'modal','data-target'=>'#testModal2']) ?>
+                </div>
+              </div>
+            <?php else : ?>
+              <button class="btn btn-primary mx-2 header-register-login">登録/ログイン</button>
+            <?php endif; ?>
           </div>
         </div>
       </div>

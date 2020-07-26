@@ -32,4 +32,10 @@ class MoviesController extends AppController {
     $this->Movies->delete($movie);
     $this->redirect(['controller'=>'Top','action'=>'index']);
   }
+
+  public function likestore() {
+    $this->autoRender = false;
+    $entity = $this->Movies->find()->contain(['Users'])->all();
+    dd($entity);
+  }
 }

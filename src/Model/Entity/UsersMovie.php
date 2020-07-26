@@ -4,21 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Movie Entity
+ * UsersMovie Entity
  *
  * @property int $id
- * @property string $link
- * @property string $title
- * @property string $description
- * @property string $channel_title
- * @property int $view_count
- * @property int $like_count
- * @property int $dislike_count
- * @property int $comment_count
+ * @property int $user_uniqueid
+ * @property int $movie_id
  * @property \Cake\I18n\FrozenTime $created_at
  * @property \Cake\I18n\FrozenTime $updated_at
+ *
+ * @property \App\Model\Entity\Movie $movie
  */
-class Movie extends Entity
+class UsersMovie extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -30,17 +26,10 @@ class Movie extends Entity
      * @var array
      */
     protected $_accessible = [
-        'link' => true,
-        'title' => true,
-        'description' => true,
-        'channel_title' => true,
-        'view_count' => true,
-        'like_count' => true,
-        'dislike_count' => true,
-        'comment_count' => true,
+        'user_uniqueid' => true,
+        'movie_id' => true,
         'created_at' => true,
         'updated_at' => true,
-        'group_name' => true,
-        'users' => true
+        'movie' => true,
     ];
 }
