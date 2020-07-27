@@ -2,7 +2,7 @@
   <div class="search-side-content">
     <div class="close">×</div>
     <div class="container">
-        <?= $this->Form->create(null,['action'=>'keywordsearch','type'=>'get']) ?>
+        <?= $this->Form->create(null,['url'=>['controller'=>'top','action'=>'keywordsearch'],'type'=>'get']) ?>
           <div class="py-3 input-group">
             <?= $this->Form->text('keyword',['placeholder'=>'検索キーワードを入力する','class'=>'form-control']) ?>
             <div class="input-group-append">
@@ -11,7 +11,7 @@
           </div>
         <?= $this->Form->end() ?>
       <div class="pt-3 pl-5 group-set">
-        <?= $this->Form->create(null,['type'=>'get','url'=>['action'=>'sideSearch']]) ?>
+        <?= $this->Form->create(null,['type'=>'get','url'=>['controller'=>'top','action'=>'sideSearch']]) ?>
         <p class="group-item"><?= $this->Form->checkbox('乃木坂46',['id'=>'nogizaka','checked'=>true]) ?>
         <?= $this->Form->label('nogizaka','乃木坂46') ?></p>
         <p class="group-item"><?= $this->Form->checkbox('欅坂46',['id'=>'keyakizaka']) ?>

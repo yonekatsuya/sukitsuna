@@ -40,7 +40,7 @@
         <?php else : ?>
           <button class="btn p-3 like-btn unlike-btn">好き解除</button>
         <?php endif; ?>
-        <button class="btn btn-warning p-3 like-index-btn">好き一覧</button>
+        <?= $this->Html->link('好き一覧',['controller'=>'usersmovies','action'=>'likeUserIndex','?'=>['id'=>$movie->id]],['class'=>'btn btn-warning p-3 like-index-btn']) ?>
         <input type="hidden" class="hidden" value="<?= $movie->id ?>">
         <!-- <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
       </div>

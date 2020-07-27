@@ -36,10 +36,10 @@ class UsersController extends AppController {
     // 「$user_info」に、Twitterアカウントの情報が収められている。
 
     // ユーザー情報を取得する。登録済みであればユーザー情報が返ってきて、未登録であればnull値が返ってくる
-    $user = $this->Users->find()->where(['uniqueid'=>$user_info->id]);
+    $user = $this->Users->find()->where(['uniqueid'=>$user_info->id])->toArray();
     
     // TwitterAPIから取得したユーザーが、既に一度登録済みかどうかを判定
-    if ($user) {
+    if (count($user)) {
       // 対象レコードを取得する
       $user = $this->Users->find()->where(['uniqueid'=>$user_info->id])->toArray()[0];
       // セッション変数に値を格納して、ログイン状態にする
