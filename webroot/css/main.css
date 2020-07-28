@@ -110,6 +110,7 @@ header {
 /* 動画エリア */
 .movie-area, .profile-movie-area {
   background-color: #fff0f5;
+  height: 400px !important;
 }
 
 /* 「好き」と「好き一覧」ボタン */
@@ -195,7 +196,7 @@ header {
 }
 
 /* ユーザープロフィールモーダル */
-.user-profile-modal {
+.user-profile-modal, .like-user-profile-modal {
   position: fixed;
   top: 0;
   left: -100%;
@@ -205,40 +206,37 @@ header {
   z-index: 1000;
 }
 
-.user-profile-modal .close {
+.user-profile-modal .close, .like-user-profile-modal .close {
   position: absolute;
   top: 0;
   right: 0;
   font-size: 80px;
 }
 
-.user-profile-modal .close:hover {
+.user-profile-modal .close:hover, .like-user-profile-modal .close:hover {
   opacity: 0.7;
   cursor: pointer;
 }
 
-.twitter-profile {
+.twitter-profile, .like-twitter-profile {
   overflow: scroll;
 }
 
-.twitter-profile-content {
+.twitter-profile-content, .like-twitter-profile-content {
   width: 90%;
 }
 
-.login-user-like-movie {
+.login-user-like-movie, .like-login-user-like-movie {
   overflow: scroll;
+  background-color: #f0f8ff;
 }
 
-.twitter-profile .logo {
+.twitter-profile .logo, .like-twitter-profile .logo {
   font-size: 100px;
 }
 
-.twitter-user-info .info {
+.twitter-user-info .info, .like-twitter-user-info .info {
   font-size: 1.2rem;
-}
-
-.login-user-like-movie {
-  background-color: #f0f8ff;
 }
 
 /* 好き解除用スタイル */

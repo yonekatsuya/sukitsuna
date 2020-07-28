@@ -5,12 +5,13 @@
   <title>
     <?= $this->fetch('title') ?>
   </title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
   <?php
-  // echo $this->Html->css('bootstrap.min.css');
   echo $this->Html->css('main.css');
   echo $this->fetch('meta');
   echo $this->fetch('css');
@@ -20,12 +21,14 @@
 
 <body>
   <?php if (isset($_SESSION['name'])) : ?>
-    <input type="hidden" class="hidden-login-id" value="<?= $_SESSION['uniqueid'] ?>">
+    <input type="hidden" class="hidden-login-id" value="<?= $_SESSION['id'] ?>">
     <?php $login_user_like_movies_string = implode(',',$login_user_like_movies) ?>
     <input type="hidden" class="hidden-login_user-like-movies" value="<?= $login_user_like_movies_string ?>">
   <?php endif; ?>
 
   <?= $this->element('Top/header') ?>
+
+  <div class="w-100 text-center bg-warning"><?= $this->Flash->render() ?></div>
 
   <div class="container">
       <?= $this->fetch('content') ?>
@@ -45,6 +48,8 @@
   <?php if (isset($_SESSION['name'])) : ?>
     <?= $this->element('Users/profile') ?>
   <?php endif; ?>
+
+  <?= $this->element('Users/likeUserProfile') ?>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

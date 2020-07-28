@@ -1,21 +1,21 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\UsersMoviesTable;
+use App\Model\Table\MoviesUsersTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\UsersMoviesTable Test Case
+ * App\Model\Table\MoviesUsersTable Test Case
  */
-class UsersMoviesTableTest extends TestCase
+class MoviesUsersTableTest extends TestCase
 {
     /**
      * Test subject
      *
-     * @var \App\Model\Table\UsersMoviesTable
+     * @var \App\Model\Table\MoviesUsersTable
      */
-    public $UsersMovies;
+    public $MoviesUsers;
 
     /**
      * Fixtures
@@ -23,7 +23,7 @@ class UsersMoviesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.UsersMovies',
+        'app.MoviesUsers',
         'app.Movies',
     ];
 
@@ -35,8 +35,8 @@ class UsersMoviesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('UsersMovies') ? [] : ['className' => UsersMoviesTable::class];
-        $this->UsersMovies = TableRegistry::getTableLocator()->get('UsersMovies', $config);
+        $config = TableRegistry::getTableLocator()->exists('MoviesUsers') ? [] : ['className' => MoviesUsersTable::class];
+        $this->MoviesUsers = TableRegistry::getTableLocator()->get('MoviesUsers', $config);
     }
 
     /**
@@ -46,7 +46,7 @@ class UsersMoviesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->UsersMovies);
+        unset($this->MoviesUsers);
 
         parent::tearDown();
     }

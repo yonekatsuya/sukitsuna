@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * UsersMovies Model
+ * MoviesUsers Model
  *
  * @property \App\Model\Table\MoviesTable&\Cake\ORM\Association\BelongsTo $Movies
  *
- * @method \App\Model\Entity\UsersMovie get($primaryKey, $options = [])
- * @method \App\Model\Entity\UsersMovie newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\UsersMovie[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\UsersMovie|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UsersMovie saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\UsersMovie patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\UsersMovie[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\UsersMovie findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\MoviesUser get($primaryKey, $options = [])
+ * @method \App\Model\Entity\MoviesUser newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\MoviesUser[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\MoviesUser|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\MoviesUser saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\MoviesUser patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\MoviesUser[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\MoviesUser findOrCreate($search, callable $callback = null, $options = [])
  */
-class UsersMoviesTable extends Table
+class MoviesUsersTable extends Table
 {
     /**
      * Initialize method
@@ -32,12 +32,12 @@ class UsersMoviesTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('users_movies');
+        $this->setTable('movies_users');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
-            'foreignKey' => 'user_uniqueid',
+            'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
         
@@ -60,8 +60,8 @@ class UsersMoviesTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
-            ->requirePresence('user_uniqueid', 'create')
-            ->notEmptyString('user_uniqueid');
+            ->requirePresence('user_id', 'create')
+            ->notEmptyString('user_id');
         
         $validator
             ->requirePresence('movie_id', 'create')

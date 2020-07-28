@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * User Entity
  *
  * @property int $id
- * @property int $uniqueid
+ * @property int $id
  * @property string $name
  * @property string $screen_name
  * @property string|null $location
@@ -33,7 +33,7 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        'uniqueid' => true,
+        'id' => true,
         'name' => true,
         'screen_name' => true,
         'location' => true,
