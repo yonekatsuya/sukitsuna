@@ -72,8 +72,9 @@ class MoviesUsersController extends AppController {
 
     $array = [];
     foreach ($movieIdArray as $id) {
-      $array[] = $this->Movies->find()->where(['id'=>$id])->toArray();
+      $array[] = $this->Movies->find()->where(['id'=>$id])->contain(['Users'])->toArray();
     }
+    $this->log($array);
 
     $movies = [];
 
@@ -86,7 +87,8 @@ class MoviesUsersController extends AppController {
         'view_count' => $item[0]->view_count,
         'like_count' => $item[0]->like_count,
         'dislike_count' => $item[0]->dislike_count,
-        'comment_count' => $item[0]->comment_count
+        'comment_count' => $item[0]->comment_count,
+        'users' => count($item[0]->users)
       ];
     }
 

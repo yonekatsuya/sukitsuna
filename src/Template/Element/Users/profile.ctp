@@ -11,8 +11,7 @@
           <i class="fab fa-twitter text-info"></i>
         </div>
         <div class="mt-3">
-          <?php $twitterUrl = 'https://mobile.twitter.com/' . $_SESSION['screen_name'] ?>
-          <?= $this->Html->link('Twitterアカウント',$twitterUrl,['class'=>'btn btn-info text-white font-weight-bold d-flex align-items-center justify-content-center','target'=>'_blank']) ?>
+          <?= $this->Html->link('Twitterアカウント',$_SESSION['screen_name'],['class'=>'btn btn-info text-white font-weight-bold d-flex align-items-center justify-content-center','target'=>'_blank']) ?>
         </div>
 
         <div class="twitter-user-info my-4">

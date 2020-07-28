@@ -5,7 +5,7 @@
     <div class="like-twitter-profile h-100 w-25">
       <div class="container like-twitter-profile-content my-4 h-100">
         <div>
-          <?= $this->Html->image('',['class'=>'like-user-profile-image-url d-block mx-auto','width'=>'70%','alt'=>'プロフィール画像']) ?>
+          <?= $this->Html->image('cake.icon.png',['class'=>'like-user-profile-image-url d-block mx-auto','width'=>'70%','alt'=>'プロフィール画像']) ?>
         </div>
         <div class="logo d-flex align-items-center justify-content-center mt-3">
           <i class="fab fa-twitter text-info"></i>
