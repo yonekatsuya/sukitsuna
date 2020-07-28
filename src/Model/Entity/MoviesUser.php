@@ -4,17 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * UsersMovie Entity
+ * MoviesUser Entity
  *
  * @property int $id
- * @property int $user_uniqueid
+ * @property int $user_id
  * @property int $movie_id
  * @property \Cake\I18n\FrozenTime $created_at
  * @property \Cake\I18n\FrozenTime $updated_at
  *
  * @property \App\Model\Entity\Movie $movie
  */
-class UsersMovie extends Entity
+class MoviesUser extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -26,7 +26,7 @@ class UsersMovie extends Entity
      * @var array
      */
     protected $_accessible = [
-        'user_uniqueid' => true,
+        'user_id' => true,
         'movie_id' => true,
         'created_at' => true,
         'updated_at' => true,

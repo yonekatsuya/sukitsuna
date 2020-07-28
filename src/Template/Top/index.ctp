@@ -23,16 +23,22 @@
 </div>
 
 <?php foreach ($movies as $movie) : ?>
-  <div class="row p-3 mb-3 movie-area">
-    <div class="col-7 d-flex align-items-center">
-      <p class="mt-4"><?= $movie->link ?></p>
+  <div class="row p-3 mb-5 movie-area">
+    <div class="col-7 h-100 d-flex align-items-center">
+      <div class="h-100 d-flex align-items-center"><?= $movie->link ?></div>
     </div>
-    <div class="col-5">
+    <div class="col-5 h-100">
       <div class="h-75 mt-4 movie-title-description">
         <p class="font-weight-bold border-bottom border-success">タイトル</p>
-        <p><?= $movie->title ?></p>
-        <p class="font-weight-bold border-bottom border-success">説明欄</p>
-        <p><?= $movie->description ?></p>
+        <p class="font-weight-bold"><?= $movie->title ?></p>
+        <p class="font-weight-bold border-bottom border-success">再生数</p>
+        <p><?= $this->Number->format($movie->view_count) ?></p>
+        <p class="font-weight-bold border-bottom border-success">高評価数</p>
+        <p><?= $this->Number->format($movie->like_count) ?></p>
+        <p class="font-weight-bold border-bottom border-success">低評価数</p>
+        <p><?= $this->Number->format($movie->dislike_count) ?></p>
+        <p class="font-weight-bold border-bottom border-success">コメント数</p>
+        <p><?= $this->Number->format($movie->comment_count) ?></p>
       </div>
       <div class="row justify-content-around">
         <?php if (!in_array($movie->id,$login_user_like_movies)) : ?>
@@ -40,7 +46,7 @@
         <?php else : ?>
           <button class="btn p-3 like-btn unlike-btn">好き解除</button>
         <?php endif; ?>
-        <?= $this->Html->link('好き一覧',['controller'=>'usersmovies','action'=>'likeUserIndex','?'=>['id'=>$movie->id]],['class'=>'btn btn-warning p-3 like-index-btn']) ?>
+        <a href="/sukitsuna/moviesusers/likeUserIndex?id=<?= $movie->id ?>" class="btn btn-warning p-3 like-index-btn">好き一覧(<span><?= count($movie->users) ?></span>)</a>
         <input type="hidden" class="hidden" value="<?= $movie->id ?>">
         <!-- <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
       </div>

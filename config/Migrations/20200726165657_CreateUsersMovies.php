@@ -13,7 +13,7 @@ class CreateUsersMovies extends AbstractMigration
     public function change()
     {
         $table = $this->table('users_movies');
-        $table->addColumn('user_uniqueid', 'integer', [
+        $table->addColumn('user_id', 'integer', [
             'default' => null,
             'limit' => 50,
             'null' => false,

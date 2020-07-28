@@ -45,7 +45,7 @@
     <div class="login-user-like-movie h-100 w-75">
       <div class="container my-3">
         <div class="row d-flex align-items-center justify-content-center my-5">
-          <h2 class="font-weight-bold">好き動画一覧（30件）</h2>
+          <h2 class="title font-weight-bold">好き動画一覧（<span></span>件）</h2>
         </div>
 
         <div class="login-user-like-movie-dom"></div>
