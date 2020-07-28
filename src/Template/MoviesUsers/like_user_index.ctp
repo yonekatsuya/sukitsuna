@@ -1,4 +1,4 @@
-<div class="row p-3 mb-5 mt-5 movie-area">
+<div class="row p-3 mb-5 mt-5 movie-area movie-common-area">
   <div class="col-7 h-100 d-flex align-items-center">
     <div class="h-100 d-flex align-items-center"><?= $likeMovie->link ?></div>
   </div>
@@ -28,10 +28,10 @@
 </div>
 
 <div class="row top-title my-5 justify-content-center">
-  <h3>この動画を好き登録しているユーザーの一覧（<?= $count ?>人）</h3>
+  <h3 class="like-user-index-title">この動画を好き登録しているユーザーの一覧（<span><?= $count ?></span>人）</h3>
 </div>
 
-<div class="row justify-content-around">
+<div class="row justify-content-around user-card-area">
   <?php foreach ($likeUsers as $user) : ?>
     <div class="like-user-area p-4 mb-5">
       <div class="row">

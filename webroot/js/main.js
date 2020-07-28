@@ -235,13 +235,12 @@ $(function() {
         userId: userId
       }
     }).done(function(response) {
-
       $('.login-user-like-movie .title span').text(response.count);
 
       $('.login-user-like-movie-dom').text('');
 
       response.item.forEach(function(movie) {
-        var html = '<div class="row p-3 mb-5 profile-movie-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
+        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
 
         var likeMovies = $('.hidden-login_user-like-movies').val();
         likeMovies = likeMovies.split(',');
@@ -252,7 +251,7 @@ $(function() {
           html += '<button class="btn btn-info p-3 like-btn">好き</button>';
         }
 
-        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
+        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧（<span>' + movie.users + '</span>）</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
         
         $('.login-user-like-movie-dom').append(html);
       })
@@ -289,7 +288,7 @@ $(function() {
     var otherUrl = $(this).parent().find('.like-user-hidden-other-url').val();
 
     $('.like-user-profile-image-url').attr('src',profileImageUrl);
-    $('.like-user-screen-name').attr('href','https://mobile.twitter.com/' + screenName);
+    $('.like-user-screen-name').attr('href',screenName);
     $('.like-user-name').text(name);
     $('.like-user-location').text(location);
     $('.like-user-description').text(description);
@@ -314,7 +313,7 @@ $(function() {
       $('.like-login-user-like-movie-dom').text('');
 
       response.item.forEach(function(movie) {
-        var html = '<div class="row p-3 mb-5 profile-movie-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
+        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
 
         if ($('.hidden-login-id').length) {
           var likeMovies = $('.hidden-login_user-like-movies').val();
@@ -329,7 +328,7 @@ $(function() {
           html += '<button class="btn btn-info p-3 like-btn">好き</button>';
         }
 
-        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
+        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧（<span>' + movie.users + '</span>）</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
         
         $('.like-login-user-like-movie-dom').append(html);
       })
@@ -348,6 +347,9 @@ $(function() {
 
   // 動画の「好き」ボタン押下時の処理（ログイン時のみ処理を走らせる）
   $(document).on('click','.movie-area .like-btn, .profile-movie-area .like-btn',function() {
+    // 押下した対象要素を取得する
+    var clickElement = $(this);
+
     // ログインしていなければ、処理を中断する
     if (!$('.hidden-login-id').length) {
       var url = encodeURIComponent(location.href);
@@ -355,14 +357,59 @@ $(function() {
       return;
     }
 
+    // ログインユーザーのID値と対象動画のIDを取得する
     var userId = $('.hidden-login-id').val();
     var movieId = $(this).parent().find('input').val();
 
+
+    // 「好き」ボタン押下時の処理
     if ($(this).hasClass('btn-info')) {
-      // 表示切り替え
+      // 対象ボタンの表示切り替え
       $(this).removeClass('btn-info')
              .addClass('unlike-btn')
              .text('好き解除');
+
+      // プロフィールモーダル上で「好き」ボタンを押下した場合、本画面に対象動画が存在していれば、ボタンの表示を切り替える。
+      if (clickElement.parents('.profile-movie-area').length) {
+        for (var i = 0;i < $('.movie-area').length;i++) {
+          if ($('.movie-area').eq(i).find('input').val() == movieId) {
+            $('.movie-area').eq(i).find('.btn-info')
+                                  .removeClass('btn-info')
+                                  .addClass('unlike-btn')
+                                  .text('好き解除');
+            break;
+          }
+        }
+      }
+
+      // プロフィールモーダルもしくはトップ画面の動画一覧で「好き」を押下した際、横の「好き一覧」ボタンのカッコ内の数値をインクリメントする。
+      if ($(this).parent().find('.like-index-btn').length) {
+        var indexNum = $(this).parent().find('.like-index-btn span').text();
+        indexNum = parseInt(indexNum);
+        indexNum++;
+        $(this).parent().find('.like-index-btn span').text(indexNum);
+      }
+
+      // プロフィールモーダルの「好き」押下時のみ実行
+      if (clickElement.parents('.profile-movie-area').length) {
+        // プロフィールモーダルで「好き」押下時、本画面の方に「好き一覧」ボタンを持つ同じ動画が存在すれば、数値をインクリメントする。
+        for (var i = 0;i < $('.movie-area .like-index-btn').length;i++) {
+          if ($('.movie-area').eq(i).find('input').val() == movieId) {
+            var indexNum = $('.movie-area').eq(i).find('.like-index-btn span').text();
+            indexNum = parseInt(indexNum);
+            indexNum++;
+            $('.movie-area').eq(i).find('.like-index-btn span').text(indexNum);
+            break;
+          }
+        }
+      }
+
+      if ($('.like-user-index-title').length) {
+        var userNum = $('.like-user-index-title').find('span').text();
+        userNum = parseInt(userNum);
+        userNum++;
+        $('.like-user-index-title').find('span').text(userNum);
+      }
 
       $.ajax({
         type: 'post',
@@ -374,13 +421,66 @@ $(function() {
         }
       }).done(function(response) {
         console.log('ok');
+
+        if ($('.user-card-area').length) {
+          $('.user-profile-modal')
+          // 好き動画ページから好き登録を行った場合、ログインユーザーのユーザーコンポーネントを生成して「.user-card-area」要素の最後の要素として追加する。
+          var html = '<div class="like-user-area p-4 mb-5"><div class="row"><div class="col-4"><img class="like-user-image mb-3" width="100%" alt="プロフィール画像" src="' + $('.user-profile-modal .twitter-profile img').attr('src') + '"></img><button class="like-user-info btn btn-info p-3 text-white font-weight-bold w-100">詳細</button><input type="hidden" class="like-user-hidden-id" value="' + userId + '"><input type="hidden" class="like-user-hidden-profile-image-url" value="' + $('.user-profile-modal .twitter-profile img').attr('src') + '"><input type="hidden" class="like-user-hidden-screen-name" value="' + $('.user-profile-modal a:first').attr('href') + '"><input type="hidden" class="like-user-hidden-name" value="' + $('.user-profile-modal .info:eq(0)').text() + '"><input type="hidden" class="like-user-hidden-location" value="' + $('.user-profile-modal .info:eq(1)').text() +'"><input type="hidden" class="like-user-hidden-description" value="' + $('.user-profile-modal .info:eq(2)').text() +'"><input type="hidden" class="like-user-hidden-friends-count" value="' + $('.user-profile-modal .info:eq(3)').text() +'"><input type="hidden" class="like-user-hidden-followers-count" value="' + $('.user-profile-modal .info:eq(4)').text() + '"><input type="hidden" class="like-user-hidden-other-url" value="' + $('.user-profile-modal .info:eq(5)').text() + '"></div><div class="col-8 like-user-area-info"><div class="font-weight-bold border-bottom border-success">名前</div><div class="name mt-2">' + $('.user-profile-modal .info:eq(0)').text() + '</div><div class="font-weight-bold border-bottom border-success mt-3">自己紹介</div><div class="introduce mt-2">' + $('.user-profile-modal .info:eq(2)').text() + '</div></div></div></div>';
+
+          $('.user-card-area').prepend(html);
+        }
       }).fail(function(response) {
         console.log('ng');
       });
+
+      // 「好き解除」ボタン押下時の処理
     } else {
+      // 対象ボタンの表示切り替え
       $(this).addClass('btn-info')
              .removeClass('unlike-btn')
              .text('好き');
+
+      // プロフィールモーダル上で「好き解除」ボタンを押下した場合、本画面に対象動画存在していれば、ボタンの表示を切り替える。
+      if (clickElement.parents('.profile-movie-area').length) {
+        for (var i = 0;i < $('.movie-area').length;i++) {
+          if ($('.movie-area').eq(i).find('input').val() == movieId) {
+            $('.movie-area').eq(i).find('.unlike-btn')
+                                  .addClass('btn-info')
+                                  .removeClass('unlike-btn')
+                                  .text('好き');
+            break;
+          }
+        }
+      }
+
+      // プロフィールモーダルもしくはトップ画面の動画一覧で「好き解除」を押下した際、横の「好き一覧」ボタンのカッコ内の数値をデクリメントする。
+      if ($(this).parent().find('.like-index-btn').length) {
+        var indexNum = $(this).parent().find('.like-index-btn span').text();
+        indexNum = parseInt(indexNum);
+        indexNum--;
+        $(this).parent().find('.like-index-btn span').text(indexNum);
+      }
+
+      // プロフィールモーダルの「好き解除」押下時のみ実行（本画面の「好き解除」では実行されない）
+      if (clickElement.parents('.profile-movie-area').length) {
+        // プロフィールモーダルで「好き解除」押下時、本画面の方に「好き一覧」ボタンを持つ同じ動画が存在すれば、数値をデクリメントする。
+        for (var i = 0;i < $('.movie-area .like-index-btn').length;i++) {
+          if ($('.movie-area').eq(i).find('input').val() == movieId) {
+            var indexNum = $('.movie-area').eq(i).find('.like-index-btn span').text();
+            indexNum = parseInt(indexNum);
+            indexNum--;
+            $('.movie-area').eq(i).find('.like-index-btn span').text(indexNum);
+            break;
+          }
+        }
+      }
+
+      if ($('.like-user-index-title').length) {
+        var userNum = $('.like-user-index-title').find('span').text();
+        userNum = parseInt(userNum);
+        userNum--;
+        $('.like-user-index-title').find('span').text(userNum);
+      }
       
       $.ajax({
         type: 'post',
@@ -391,7 +491,16 @@ $(function() {
           movieId: movieId
         }
       }).done(function(response) {
-        console.log('ok');
+        // プロフィールモーダルもしくは本画面で「好き解除」ボタン押下時、ユーザーカードが表示されているページでは、対象ユーザーのカードを削除する
+        if ($('.like-user-area').length) {
+          if ($('.movie-area').find('input').val() == movieId) {
+            for (var i = 0;i < $('.like-user-area').length;i++) {
+              if ($('.like-user-area').eq(i).find('.like-user-hidden-id').val() == userId) {
+                $('.like-user-area').eq(i).remove();
+              }
+            }
+          }
+        }
       }).fail(function(response) {
         console.log('ng');
       });

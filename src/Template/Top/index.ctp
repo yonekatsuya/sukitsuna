@@ -23,7 +23,7 @@
 </div>
 
 <?php foreach ($movies as $movie) : ?>
-  <div class="row p-3 mb-5 movie-area">
+  <div class="row p-3 mb-5 movie-area movie-common-area">
     <div class="col-7 h-100 d-flex align-items-center">
       <div class="h-100 d-flex align-items-center"><?= $movie->link ?></div>
     </div>

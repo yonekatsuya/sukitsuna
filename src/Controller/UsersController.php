@@ -45,7 +45,7 @@ class UsersController extends AppController {
       // セッション変数に値を格納して、ログイン状態にする
       $_SESSION['id'] = $user->id;
       $_SESSION['name'] = $user->name;
-      $_SESSION['screen_name'] = $user->screen_name;
+      $_SESSION['screen_name'] = 'https://mobile.twitter.com/' . $user->screen_name;
       $_SESSION['location'] = $user->location;
       $_SESSION['description'] = $user->description;
       $_SESSION['other_url'] = $user->other_url;
@@ -73,7 +73,7 @@ class UsersController extends AppController {
       // セッション変数に値を格納して、ログイン状態にする
       $_SESSION['id'] = $user->id;
       $_SESSION['name'] = $user->name;
-      $_SESSION['screen_name'] = $user->screen_name;
+      $_SESSION['screen_name'] = 'https://mobile.twitter.com/' . $user->screen_name;
       $_SESSION['location'] = $user->location;
       $_SESSION['description'] = $user->description;
       $_SESSION['other_url'] = $user->other_url;
