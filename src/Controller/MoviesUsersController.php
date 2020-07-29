@@ -50,34 +50,48 @@ class MoviesUsersController extends AppController {
   }
 
   public function delete() {
-    $user_id = $this->request->getData('userId');
-    $movie_id = $this->request->getData('movieId');
-
-    $this->MoviesUsers->deleteAll(['user_id'=>$user_id,'movie_id'=>$movie_id]);
+    if (isset($_SESSION['name'])) {
+      $user_id = $this->request->getData('userId');
+      $movie_id = $this->request->getData('movieId');
+  
+      $this->MoviesUsers->deleteAll(['user_id'=>$user_id,'movie_id'=>$movie_id]);
+    } else {
+      $this->redirect(['controller'=>'top','action'=>'index']);
+    }
   }
 
-  // 対象ユーザーが好き登録している動画の一覧をJSON形式で取得する
+  // 対象ユーザーが好き登録している動画一覧をJSON形式で取得する
   public function loginUserLikeMovies() {
-    $login_id = $this->request->getQuery('userId');
+    // 対象ユーザーの取得
+    $user = $this->Users->find()->where(['id'=>$this->request->getQuery('userId')])->contain(['Movies'])->toArray();
 
-    // 対象ユーザーの好き登録している動画の数を取得する
-    $count = $this->MoviesUsers->find()->where(['user_id'=>$login_id])->count();
-    
-    $loginUserLikeMovies = $this->MoviesUsers->find()->where(['user_id'=>$login_id])->select(['movie_id'])->toArray();
+    // 「何件目からの」データを取得するか、リクエストパラメータの値から計算
+    $x = $this->request->getQuery('dispNum');
 
-    $movieIdArray = [];
-    foreach ($loginUserLikeMovies as $item) {
-      $movieIdArray[] = $item->movie_id;
+    if (count($user[0]->movies) < 10) {
+      $from = 0;
+      $to = count($user[0]->movies) - 1;
+    } else {
+      $toNum = $x * 10;
+      if (($toNum - (int)count($user[0]->movies)) >= 1) {
+        $flg = 10 - ($toNum - (int)count($user[0]->movies));
+        $from = $x * 10 - 10;
+        $to = $from + ($flg - 1);
+      } else {
+        $from = $x * 10 - 10;
+        $to = $x * 10 - 1;
+      }
     }
 
+    // 10件分のデータを取得する
     $array = [];
-    foreach ($movieIdArray as $id) {
-      $array[] = $this->Movies->find()->where(['id'=>$id])->contain(['Users'])->toArray();
+    for ($i = $from;$i <= $to;$i++) {
+      $array[] = $this->Movies->find()->where(['id'=>$user[0]->movies[$i]->id])->contain(['Users'])->toArray();
     }
-    $this->log($array);
 
     $movies = [];
 
+    // 各動画情報をJSON形式に変換するように配列を作成する
     foreach ($array as $item) {
       $movies['item'][] = [
         "id" => $item[0]->id,
@@ -92,13 +106,20 @@ class MoviesUsersController extends AppController {
       ];
     }
 
-    $movies['count'] = $count;
+    $movies['count'] = count($user[0]->movies);
+
+    if (count($user[0]->movies) < 10) {
+      $movies['addRecordFlg'] = false;
+    } else {
+      $movies['addRecordFlg'] = true;
+    }
 
     $json = json_encode($movies,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-    echo $json;
-    
+    $this->response->body($json);
+    return;
   }
 
+  // 対象動画を好き登録しているユーザー一覧をJSON形式で取得する
   public function likeUserIndex() {
     $this->autoRender = true;
     $this->viewBuilder()->setLayout('Main');

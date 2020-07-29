@@ -22,7 +22,6 @@
         <button class="btn p-3 like-btn unlike-btn w-75">好き解除</button>
       <?php endif; ?>
       <input type="hidden" class="hidden" value="<?= $likeMovie->id ?>">
-      <!-- <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
     </div>
   </div>
 </div>

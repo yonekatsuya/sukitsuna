@@ -87,9 +87,13 @@ class UsersController extends AppController {
   }
 
   public function delete() {
-    $_SESSION = [];
-    session_destroy();
-    return $this->redirect(['controller'=>'top','action'=>'index']);
+    if (isset($_SESSION['name'])) {
+      $_SESSION = [];
+      session_destroy();
+      return $this->redirect(['controller'=>'top','action'=>'index']);
+    } else {
+      $this->redirect(['controller'=>'top','action'=>'index']);
+    }
   }
 
 }

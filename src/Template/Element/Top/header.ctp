@@ -22,12 +22,12 @@
               <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" id="wackButton" aria-haspopup="true" aria-expanded="false">WACK</button>
               <div class="dropdown-menu" aria-labelledby="wackButton">
                 <?= $this->Html->link('BiSH',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'BiSH']],['class'=>'dropdown-item']) ?>
-                <?= $this->Html->link('GANG PARADE',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'GANG PARADE']],['class'=>'dropdown-item']) ?>
-                <?= $this->Html->link('GO TO THE BEDS',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'GO TO THE BEDS']],['class'=>'dropdown-item']) ?>
+                <?= $this->Html->link('GANG PARADE',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'GANG_PARADE']],['class'=>'dropdown-item']) ?>
+                <?= $this->Html->link('GO TO THE BEDS',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'GO_TO_THE_BEDS']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('PARADISES',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'PARADISES']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('BiS',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'BiS']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('EMPiRE',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'EMPiRE']],['class'=>'dropdown-item']) ?>
-                <?= $this->Html->link('CARRY LOOSE',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'CARRY LOOSE']],['class'=>'dropdown-item']) ?>
+                <?= $this->Html->link('CARRY LOOSE',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'CARRY_LOOSE']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('PEDRO',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'PEDRO']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('豆柴の大群',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'豆柴の大群']],['class'=>'dropdown-item']) ?>
                 <?= $this->Html->link('WAgg',['controller'=>'Top','action'=>'search','?'=>['groupName'=>'WAgg']],['class'=>'dropdown-item']) ?>
@@ -35,6 +35,9 @@
             </div>
 
             <?php if (isset($_SESSION['name'])) : ?>
+              <?php if ($_SESSION['id'] == 1079030440323833857) : ?>
+                <?= $this->Html->link('動画追加','/admin/index',['class'=>'btn btn-primary mx-2']) ?>
+              <?php endif; ?>
               <div class="dropdown">
                 <?= $this->Html->image($_SESSION['profile_image_url'],['class'=>'header-profile dropdown-toggle','width'=>40,'alt'=>'プロフィール画像','data-toggle'=>'dropdown']) ?>
                 <div class="dropdown-menu">

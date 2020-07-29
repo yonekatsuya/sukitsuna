@@ -48,7 +48,15 @@
         <?php endif; ?>
         <a href="/sukitsuna/moviesusers/likeUserIndex?id=<?= $movie->id ?>" class="btn btn-warning p-3 like-index-btn">好き一覧(<span><?= count($movie->users) ?></span>)</a>
         <input type="hidden" class="hidden" value="<?= $movie->id ?>">
-        <!-- <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button> -->
+
+        <!-- 管理者にのみ表示する -->
+        <?php if (isset($_SESSION['name'])) : ?>
+          <?php if ($_SESSION['id'] == 1079030440323833857) : ?>
+            <button class="btn btn-danger movie-delete" data-toggle="modal" data-target="#testModal1">削除</button>
+          <?php endif; ?>
+        <?php endif; ?>
+        <!--  -->
+
       </div>
     </div>
   </div>
