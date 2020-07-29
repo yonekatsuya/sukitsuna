@@ -12,7 +12,7 @@
         <?= $this->Form->end() ?>
       <div class="pt-3 pl-5 group-set">
         <?= $this->Form->create(null,['type'=>'get','url'=>['controller'=>'top','action'=>'sideSearch']]) ?>
-        <p class="group-item"><?= $this->Form->checkbox('乃木坂46',['id'=>'nogizaka','checked'=>true]) ?>
+        <p class="group-item"><?= $this->Form->checkbox('乃木坂46',['id'=>'nogizaka']) ?>
         <?= $this->Form->label('nogizaka','乃木坂46') ?></p>
         <p class="group-item"><?= $this->Form->checkbox('欅坂46',['id'=>'keyakizaka']) ?>
         <?= $this->Form->label('keyakizaka','欅坂46') ?></p>

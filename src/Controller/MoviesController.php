@@ -5,6 +5,7 @@ use App\Controller\AppController;
 
 class MoviesController extends AppController {
   public function initialize() {
+    parent::initialize();
     $this->name = 'Movies';
     $this->autoRender = false;
     session_start();
@@ -16,20 +17,8 @@ class MoviesController extends AppController {
       if (!($_SESSION['id'] == 1079030440323833857)) {
         $this->redirect(['controller'=>'top','action','index']);
       } else {
-        $movie = $this->Movies->newEntity();
-        $movie->link = $this->request->getData('link');
-        $movie->title = $this->request->getData('title');
-        $movie->description = $this->request->getData('description');
-        $movie->channel_title = $this->request->getData('channelTitle');
-        $movie->view_count = $this->request->getData('viewCount');
-        $movie->like_count = $this->request->getData('likeCount');
-        $movie->dislike_count = $this->request->getData('dislikeCount');
-        $movie->comment_count = $this->request->getData('commentCount');
-        $movie->group_name = $this->request->getData('groupName');
-
-        if ($this->Movies->save($movie)) {
-          $this->log('ok');
-        }
+        $movie = $this->Movies->newEntity($this->request->getData());
+        $this->Movies->save($movie);
       }
     } else {
       $this->redirect(['controller'=>'top','action'=>'index']);
@@ -42,10 +31,9 @@ class MoviesController extends AppController {
         $this->redirect(['controller'=>'top','action','index']);
       } else {
         $id = $this->request->getData('movie-delete-hidden');
-        $this->log($id);
         $movie = $this->Movies->get($id);
         $this->Movies->delete($movie);
-        $this->redirect(['controller'=>'Top','action'=>'index']);
+        $this->redirect($this->referer(['controller'=>'top','action'=>'index']));
       }
     } else {
       $this->redirect(['controller'=>'top','action'=>'index']);
