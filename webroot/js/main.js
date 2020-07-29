@@ -1,33 +1,43 @@
 $(function() {
+
+  // ヘッダーの「検索」ボタン押下時の処理
   $(document).on('click','.header-search',function() {
+    // 検索サイドモーダルが表示されていれば、画面右外に隠す
     if ($('.search-side').css('right') === '0px') {
       $('.search-side').animate({
         right: '-30%'
       },500);
     } else {
+      // 検索サイドモーダルが表示されていなければ、画面右外から画面上に表示する
       $('.search-side').animate({
         right: '0'
       },200);
     }
   });
 
+  // 検索サイドモーダルの「×」ボタン押下時の処理
   $(document).on('click','.search-side-content .close',function() {
+    // 画面右外に検索サイドモーダルを隠す
     $('.search-side').animate({
       right: '-30%'
     },500);
   });
 
+  // Bootstrapでプルダウンメニューを作成したが最初二回押さないとメニューが表示されないため、最初だけダブルクリックになるようにする
   $(document).one('click','#sakamitiButton',function() {
     $(this).trigger('click');
   });
-
   $(document).one('click','#wackButton',function() {
     $(this).trigger('click');
   });
+  $(document).one('click','.header-profile',function() {
+    $(this).trigger('click');
+  });
 
-  // トップスクロールボタン関連の処理
+  // 画面スクロール時の処理
   $('.scroll-btn').css('opacity',0);
   $(window).scroll(function() {
+    // スクロール位置がトップから100px以上の時、、トップスクロールボタン表示
     if ($(this).scrollTop() > 100) {
       $('.scroll-btn').css('opacity',1);
     } else {
@@ -35,6 +45,7 @@ $(function() {
     }
   });
 
+  // トップスクロールボタン押下時、スクロール位置を画面最上部にする
   $(document).on('click','.scroll-btn',function() {
     $('body,html').animate({
       scrollTop: 0
@@ -42,24 +53,36 @@ $(function() {
   });
 
 
-  // 管理者画面の入力フォームに検索キーワードを挿入し、送信ボタンを押した時の処理
+  // YouTube Data APIの処理
+
+  // 管理者画面で入力フォームにキーワードを入力して送信ボタン押下時に実行
   $(document).on('click','.admin-btn',function() {
+    // 入力フォームが空であれば、処理中断
+    if ($('.admin-text').val() == '') {
+      return;
+    }
+
+    // 次の何件かを取得するためのリクエストパラメータとなる情報
     var nextPageToken = '';
+    // 動画データを取得してDBに保存する処理セットのループ回数
     var loop_num_flag = 1;
 
-    top('first');
+    // 1回目のAPIへのリクエスト処理
+    youtubeAPIRequest('first');
 
-    function top(num_flag) {
+    function youtubeAPIRequest(num_flag) {
+      // ループ回数に達した場合、APIへのリクエストを止める
       if (loop_num_flag == 0) {
         return;
       }
 
+      // 2回目以降のリクエストで、次の何件かの動画データを取得するために「pageToken」をパラメータにセットする
       if (num_flag === 'first') {
         var searchRequestData = {
           part: 'snippet',
           type: 'video',
           maxResults: 50,
-          key: 'AIzaSyD9RjianGovG_qM4lIQ6D8EByzF7sg6Ldw',
+          key: 'AIzaSyCL1esPiYUHsnExLexUjtsQ4-SAKiEKmEI',
           q: $('.admin-text').val(),
         }
       } else {
@@ -67,65 +90,70 @@ $(function() {
           part: 'snippet',
           type: 'video',
           maxResults: 50,
-          key: 'AIzaSyD9RjianGovG_qM4lIQ6D8EByzF7sg6Ldw',
+          key: 'AIzaSyCL1esPiYUHsnExLexUjtsQ4-SAKiEKmEI',
           q: $('.admin-text').val(),
           pageToken: nextPageToken
         }
       }
 
-      // まず、検索キーワードを元に「search」APIにリクエストを送り、検索結果を指定件数分取得する
+      // 入力キーワードを元に「search」APIにリクエストを送り、動画を指定件数分取得する
       $.ajax({
         type: 'get',
         url: 'https://www.googleapis.com/youtube/v3/search',
         dataType: 'json',
         data: searchRequestData
       }).done(function(response) {
-        // 指定件数分のデータを取得出来た
         console.log(response);
+        // 2回目以降の動画データ取得処理のためにページトークンの値をセット
         nextPageToken = response.nextPageToken;
   
+        // 動画の取得件数分だけ値を配列に格納する
         var array = [];
         for (var i = 0; i < response.items.length;i++) {
           array.push(1);
         }
   
-        dummy();
+        // 「videos」APIへのリクエストとmoviesテーブルへの保存処理
+        movieGetAndStore();
   
-        function dummy() {
-          // 50回目の処理が終わったタイミングで、関数内の処理を終了する
+        function movieGetAndStore() {
+          // 最後の処理が終わったら、この関数内の処理を終了する
           if (array.length === 0) {
             loop_num_flag--;
-            top('second');
+            // 「loop_num_flag」の値が「0」でyoutubeAPIRequest関数を実行すると、即処理が中断する。これで、APIへのリクエストは終了する
+            youtubeAPIRequest('second');
             return;
           }
   
-          var loop_num = response.items.length - array.length;
+          // 「search」APIから取得した動画の中で、何番目の動画データを取得するか指定
+          var getMovieNum = response.items.length - array.length;
   
           // 順番に動画情報を取得する
-          var videoId = response.items[loop_num].id.videoId;
+          // まず、「search」APIから取得した情報を変数に格納しておく
+          var videoId = response.items[getMovieNum].id.videoId;
           var link = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+ videoId +'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-          var title = response.items[loop_num].snippet.title;
-          var description = response.items[loop_num].snippet.description;
-          var channelTitle = response.items[loop_num].snippet.channelTitle;
+          var title = response.items[getMovieNum].snippet.title;
+          var description = response.items[getMovieNum].snippet.description;
+          var channelTitle = response.items[getMovieNum].snippet.channelTitle;
     
+          // 対象動画の詳細情報を取得するために「videos」APIにリクエストを出す
           $.ajax({
             type: 'get',
             url: 'https://www.googleapis.com/youtube/v3/videos',
             dataType: 'json',
             data: {
               part: 'statistics',
-              key: 'AIzaSyD9RjianGovG_qM4lIQ6D8EByzF7sg6Ldw',
+              key: 'AIzaSyCL1esPiYUHsnExLexUjtsQ4-SAKiEKmEI',
               id: videoId
             }
           }).done(function(data) {
-            console.log(data);
             var viewCount = data.items[0].statistics.viewCount;
             var likeCount = data.items[0].statistics.likeCount;
             var dislikeCount = data.items[0].statistics.dislikeCount;
             var commentCount = data.items[0].statistics.commentCount;
             var groupName = $('.admin-text').val();
-            console.log(viewCount);
     
+            // 「search」と「videos」へのAPIアクセスにより取得した動画詳細データをmoviesテーブルに保存する
             $.ajax({
               type: 'post',
               url: 'http://localhost:8888/sukitsuna/movies/store',
@@ -134,15 +162,15 @@ $(function() {
                 link: link,
                 title: title,
                 description: description,
-                channelTitle: channelTitle,
-                viewCount: viewCount,
-                likeCount: likeCount,
-                dislikeCount: dislikeCount,
-                commentCount: commentCount,
-                groupName: groupName
+                channel_title: channelTitle,
+                view_count: viewCount,
+                like_count: likeCount,
+                dislike_count: dislikeCount,
+                comment_count: commentCount,
+                group_name: groupName
               }
             }).done(function(success) {
-              console.log(success);
+              console.log('ok');
             }).fail(function(error) {
               console.log(error);
             });
@@ -150,20 +178,18 @@ $(function() {
             console.log(data);
           });
   
+          // 残りのループ回数を判断するためのフラグ。配列から一つ要素を削除する
           array.shift();
   
+          // 「videos」APIへのリクエストとアクションでの対象データ保存処理について、少し間を空けることで正常に動画保存できるようにする
           setTimeout(function() {
-            dummy();
+            movieGetAndStore();
           },300);
-  
         }
-  
       }).fail(function(response) {
         console.log(response);
       });
-
     }
-
 
   });
 
@@ -174,26 +200,27 @@ $(function() {
   $('.paging-flag li a').addClass('page-link');
 
 
+  // 動画の「削除」ボタン押下時の処理
   $(document).on('click','.movie-delete',function() {
+    // 動画IDを、表示するモーダル内に格納する（その動画IDを指定アクションに渡すことで動画を削除する）
     var id = $(this).parent().find('.hidden').val();
     $('.movie-delete-hidden').val(id);
   });
 
-
-
   // サイドモーダルが開いている時に、画面上のどこかしらを押下するとサイドモーダルが閉じる処理
   $(document).on('click',function(e) {
     if ($('.search-side').css('right') === '0px') {
+      // ヘッダーの「検索」ボタン押下時は何もしない
       if ($(e.target).closest('.header-search').length) {
         return;
       } else if (!$(e.target).closest('.search-side').length) {
+        // 画面右外に検索サイドモーダルを隠す
         $('.search-side').animate({
           right: '-30%'
         },500);
       }
     }
   });
-
 
   // ヘッダーの「登録/ログイン」ボタン押下時にモーダルを表示する
   $(document).on('click','.header-register-login',function() {
@@ -205,6 +232,7 @@ $(function() {
     },300);
   });
 
+  // 「登録/ログイン」モーダルの「×」ボタン押下時にモーダルを画面上部に隠す
   $(document).on('click','.register-login-modal-content .close',function() {
     $('.register-login-modal').animate({
       top: '-100%'
@@ -212,11 +240,6 @@ $(function() {
     $('.register-login-modal-content').animate({
       top: '-50%'
     },300);
-  });
-
-  // ヘッダーのプロフィール画像押下時の処理（2回連続のクリックイベント）
-  $(document).one('click','.header-profile',function() {
-    $(this).trigger('click');
   });
 
   // 対象ユーザーの好き動画一覧をAPIから取得してDOM作成・表示を行う
@@ -466,15 +489,13 @@ $(function() {
 
     // ログインしていなければ、処理を中断する
     if (!$('.hidden-login-id').length) {
-      var url = encodeURIComponent(location.href);
-      location.href = 'http://localhost:8888/sukitsuna/moviesusers/store?query=' + url;
+      location.href = 'http://localhost:8888/sukitsuna/moviesusers/store';
       return;
     }
 
     // ログインユーザーのID値と対象動画のIDを取得する
     var userId = $('.hidden-login-id').val();
     var movieId = $(this).parent().find('input').val();
-
 
     // 「好き」ボタン押下時の処理
     if ($(this).hasClass('btn-info')) {
@@ -530,8 +551,8 @@ $(function() {
         url: 'http://localhost:8888/sukitsuna/moviesusers/store',
         dataType: 'text',
         data: {
-          userId: userId,
-          movieId: movieId
+          user_id: userId,
+          movie_id: movieId
         }
       }).done(function(response) {
         console.log('ok');
@@ -601,8 +622,8 @@ $(function() {
         url: 'http://localhost:8888/sukitsuna/moviesusers/delete',
         dataType: 'text',
         data: {
-          userId: userId,
-          movieId: movieId
+          user_id: userId,
+          movie_id: movieId
         }
       }).done(function(response) {
         // プロフィールモーダルもしくは本画面で「好き解除」ボタン押下時、ユーザーカードが表示されているページでは、対象ユーザーのカードを削除する
