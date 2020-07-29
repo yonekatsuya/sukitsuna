@@ -9,7 +9,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
-                <?= $this->Form->create($movie,['url'=>['controller'=>'Movies','action'=>'delete']]) ?>
+                <?= $this->Form->create(null,['url'=>['controller'=>'Movies','action'=>'delete']]) ?>
                 <?= $this->Form->hidden('movie-delete-hidden',['value'=>'','class'=>'movie-delete-hidden']) ?>
                 <?= $this->Form->button('はい',['class'=>'btn btn-danger']) ?>
                 <?= $this->Form->end() ?>

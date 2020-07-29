@@ -14,6 +14,7 @@
           <?= $this->Html->link('Twitterアカウント','#',['class'=>'like-user-screen-name btn btn-info text-white font-weight-bold d-flex align-items-center justify-content-center','target'=>'_blank']) ?>
         </div>
 
+        <input type="hidden" class="hidden-like-twitter-user-id" value="">
         <div class="like-twitter-user-info my-4">
           <div class="font-weight-bold border-bottom border-success">名前</div>
           <div class="like-user-name info mt-2"></div>
@@ -47,7 +48,10 @@
           <h2 class="title font-weight-bold">好き動画一覧（<span></span>件）</h2>
         </div>
 
-        <div class="like-login-user-like-movie-dom"></div>
+        <div class="like-login-user-like-movie-dom-wrap">
+          <div class="like-login-user-like-movie-dom"></div>
+          <div class="like-login-user-like-movie-dom-dummy" style="height:10px;"></div>
+        </div>
 
       </div>
     </div>

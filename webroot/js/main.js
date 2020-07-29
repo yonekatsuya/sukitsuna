@@ -219,28 +219,58 @@ $(function() {
     $(this).trigger('click');
   });
 
-  // ヘッダーの「プロフィール」押下時の処理
-  $(document).on('click','.header-profile-btn',function() {
-    $('.user-profile-modal').animate({
-      left: 0
-    },500);
-
-    var userId = $('.hidden-login-id').val();
-
+  // 対象ユーザーの好き動画一覧をAPIから取得してDOM作成・表示を行う
+  function getMovies(id,num,delFlag) {
     $.ajax({
       type: 'get',
       url: 'http://localhost:8888/sukitsuna/moviesusers/loginuserlikemovies',
       dataType: 'json',
       data: {
-        userId: userId
+        userId: id,
+        dispNum: num
       }
     }).done(function(response) {
+      console.log(response);
+
+      if (response.item == undefined) {
+        return;
+      }
+
+      // ヘッダーの「プロフィール」押下時のみ、既に表示されている動画コンポーネントを削除する
+      if (delFlag === 1) {
+        $('.login-user-like-movie').scrollTop(0);
+        $('.login-user-like-movie-dom').text('');
+      } else {
+        if (response.addRecordFlg == false) {
+          return;
+        }
+      }
+      
       $('.login-user-like-movie .title span').text(response.count);
 
-      $('.login-user-like-movie-dom').text('');
-
       response.item.forEach(function(movie) {
-        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
+        if (movie.view_count != null) {
+          var viewCount = movie.view_count.toLocaleString();
+        } else {
+          var viewCount = 0;
+        }
+        if (movie.like_count != null) {
+          var likeCount = movie.like_count.toLocaleString();
+        } else {
+          var likeCount = 0;
+        }
+        if (movie.dislike_count != null) {
+          var dislikeCount = movie.dislike_count.toLocaleString();
+        } else {
+          var dislikeCount = 0;
+        }
+        if (movie.comment_count != null) {
+          var commentCount = movie.comment_count.toLocaleString();
+        } else {
+          var commentCount = 0;
+        }
+
+        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + viewCount +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + likeCount +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + dislikeCount +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + commentCount +'</p></div><div class="row justify-content-around">';
 
         var likeMovies = $('.hidden-login_user-like-movies').val();
         likeMovies = likeMovies.split(',');
@@ -260,6 +290,33 @@ $(function() {
       console.log('error');
       console.log(response);
     });
+  }
+
+  // 何件目からの動画データを取得するかのフラグ
+  var getNumFlg = 1;
+
+  // ログインプロフィールモーダル内の動画領域を最下部までスクロールした時に処理を発生
+  $('.login-user-like-movie').scroll(function() {
+    $('.login-user-like-movie')[0].onscroll = (event) => {
+      if (event.target.clientHeight + event.target.scrollTop === event.target.scrollHeight) {
+        // ログインユーザーidを取得する
+        var userId = $('.hidden-login-id').val();
+        getNumFlg++;
+        // ログインユーザーの好き登録動画を取得・表示する関数
+        getMovies(userId,getNumFlg,0);
+      }       
+    }
+  });
+
+  // ヘッダーの「プロフィール」押下時の処理
+  $(document).on('click','.header-profile-btn',function() {
+    $('.user-profile-modal').animate({
+      left: 0
+    },500);
+
+    var userId = $('.hidden-login-id').val();
+
+    getMovies(userId,getNumFlg,1);
   });
 
   // ログインプロフィールモーダルの閉じるボタン押下時の処理
@@ -267,8 +324,98 @@ $(function() {
     $('.user-profile-modal').animate({
       left: '-100%'
     },300);
+
+    // 次動画を取得する際に最初の10件分が取得できるようにフラグをリセットする
+    getNumFlg = 1;
   })
 
+  function getMovies2(id,num,delFlag) {
+    $.ajax({
+      type: 'get',
+      url: 'http://localhost:8888/sukitsuna/moviesusers/loginuserlikemovies',
+      dataType: 'json',
+      data: {
+        userId: id,
+        dispNum: num
+      }
+    }).done(function(response) {
+      console.log(response);
+
+      if (response.item == undefined) {
+        return;
+      }
+  
+      if (delFlag === 1) {
+        $('.like-login-user-like-movie').scrollTop(0);
+        $('.like-login-user-like-movie-dom').text('');
+      } else {
+        if (response.addRecordFlg == false) {
+          return;
+        }
+      }
+
+      $('.like-login-user-like-movie .title span').text(response.count);
+  
+  
+      response.item.forEach(function(movie) {
+        if (movie.view_count != null) {
+          var viewCount = movie.view_count.toLocaleString();
+        } else {
+          var viewCount = 0;
+        }
+        if (movie.like_count != null) {
+          var likeCount = movie.like_count.toLocaleString();
+        } else {
+          var likeCount = 0;
+        }
+        if (movie.dislike_count != null) {
+          var dislikeCount = movie.dislike_count.toLocaleString();
+        } else {
+          var dislikeCount = 0;
+        }
+        if (movie.comment_count != null) {
+          var commentCount = movie.comment_count.toLocaleString();
+        } else {
+          var commentCount = 0;
+        }
+
+        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + viewCount +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + likeCount +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + dislikeCount +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + commentCount +'</p></div><div class="row justify-content-around">';
+  
+        if ($('.hidden-login-id').length) {
+          var likeMovies = $('.hidden-login_user-like-movies').val();
+          likeMovies = likeMovies.split(',');
+          
+          if (likeMovies.indexOf(movie.id)) {
+            html += '<button class="btn p-3 like-btn unlike-btn">好き解除</button>';
+          } else {
+            html += '<button class="btn btn-info p-3 like-btn">好き</button>';
+          }
+        } else {
+          html += '<button class="btn btn-info p-3 like-btn">好き</button>';
+        }
+  
+        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧（<span>' + movie.users + '</span>）</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
+        
+        $('.like-login-user-like-movie-dom').append(html);
+      })
+    }).fail(function(response) {
+      console.log('error');
+      console.log(response);
+    });
+  }
+
+  // プロフィールモーダル内の動画領域を最下部までスクロールした時に処理を発生
+  $('.like-login-user-like-movie').scroll(function() {
+    $('.like-login-user-like-movie')[0].onscroll = (event) => {
+      if (event.target.clientHeight + event.target.scrollTop === event.target.scrollHeight) {
+        // ログインユーザーidを取得する
+        var userId = $('.hidden-like-twitter-user-id').val();
+        getNumFlg++;
+        // ログインユーザーの好き登録動画を取得・表示する関数
+        getMovies2(userId,getNumFlg,0);
+      }       
+    }
+  });
 
   // ユーザーカードの「詳細」ボタン押下時の処理
   $(document).on('click','.like-user-info',function() {
@@ -287,6 +434,7 @@ $(function() {
     var followersCount = $(this).parent().find('.like-user-hidden-followers-count').val();
     var otherUrl = $(this).parent().find('.like-user-hidden-other-url').val();
 
+    $('.hidden-like-twitter-user-id').val(userId);
     $('.like-user-profile-image-url').attr('src',profileImageUrl);
     $('.like-user-screen-name').attr('href',screenName);
     $('.like-user-name').text(name);
@@ -298,43 +446,8 @@ $(function() {
     $('.like-user-other-url a').text(otherUrl)
                                .attr('href',otherUrl);
 
-    $.ajax({
-      type: 'get',
-      url: 'http://localhost:8888/sukitsuna/moviesusers/loginuserlikemovies',
-      dataType: 'json',
-      data: {
-        userId: userId
-      }
-    }).done(function(response) {
-      console.log(response);
-
-      $('.like-login-user-like-movie .title span').text(response.count);
-
-      $('.like-login-user-like-movie-dom').text('');
-
-      response.item.forEach(function(movie) {
-        var html = '<div class="row p-3 mb-5 profile-movie-area movie-common-area"><div class="col-7 h-100 d-flex align-items-center"><div class="h-100 d-flex align-items-center">' + movie.link + '</div></div><div class="col-5 h-100"><div class="h-75 mt-4 profile-movie-title-description"><p class="font-weight-bold border-bottom border-success">タイトル</p><p class="profile-title">' + movie.title + '</p><p class="font-weight-bold border-bottom border-success">再生数</p><p>' + movie.view_count +'</p><p class="font-weight-bold border-bottom border-success">高評価数</p><p>' + movie.like_count +'</p><p class="font-weight-bold border-bottom border-success">低評価数</p><p>' + movie.dislike_count +'</p><p class="font-weight-bold border-bottom border-success">コメント数</p><p>' + movie.comment_count +'</p></div><div class="row justify-content-around">';
-
-        if ($('.hidden-login-id').length) {
-          var likeMovies = $('.hidden-login_user-like-movies').val();
-          likeMovies = likeMovies.split(',');
-          
-          if (likeMovies.indexOf(movie.id)) {
-            html += '<button class="btn p-3 like-btn unlike-btn">好き解除</button>';
-          } else {
-            html += '<button class="btn btn-info p-3 like-btn">好き</button>';
-          }
-        } else {
-          html += '<button class="btn btn-info p-3 like-btn">好き</button>';
-        }
-
-        html += '<a href="/sukitsuna/moviesusers/likeUserIndex?id=' + movie.id + '" class="btn btn-warning p-3 like-index-btn">好き一覧（<span>' + movie.users + '</span>）</a><input type="hidden" class="hidden profile-hidden-id" value="' + movie.id + '"></div></div></div>';
-        
-        $('.like-login-user-like-movie-dom').append(html);
-      })
-    }).fail(function(response) {
-      console.log('error');
-    });
+    getMovies2(userId,getNumFlg,1);
+    
   });
 
   // プロフィールモーダルの閉じるボタン押下時の処理
@@ -342,6 +455,7 @@ $(function() {
     $('.like-user-profile-modal').animate({
       left: '-100%'
     },300);
+    getNumFlg = 1;
   })
 
 

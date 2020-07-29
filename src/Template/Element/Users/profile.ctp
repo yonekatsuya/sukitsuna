@@ -47,7 +47,10 @@
           <h2 class="title font-weight-bold">好き動画一覧（<span></span>件）</h2>
         </div>
 
-        <div class="login-user-like-movie-dom"></div>
+        <div class="login-user-like-movie-dom-wrap">
+          <div class="login-user-like-movie-dom"></div>
+          <div class="login-user-like-movie-dom-dummy" style="height:10px;"></div>
+        </div>
 
       </div>
     </div>
