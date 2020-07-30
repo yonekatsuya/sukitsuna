@@ -8,7 +8,6 @@ class MoviesController extends AppController {
     parent::initialize();
     $this->name = 'Movies';
     $this->autoRender = false;
-    session_start();
   }
 
   public function store() {

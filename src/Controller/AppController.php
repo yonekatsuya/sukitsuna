@@ -45,6 +45,8 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
+        $this->loadComponent('getLoginUserLikeMovies');
+        session_start();
 
         /*
          * Enable the following component for recommended CakePHP security settings.
