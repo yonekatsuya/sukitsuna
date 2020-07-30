@@ -8,7 +8,6 @@ class TopController extends AppController {
   public function initialize() {
     $this->name = 'Top';
     parent::initialize();
-    session_start();
 
     $this->viewBuilder()->setLayout('Main');
 
@@ -21,18 +20,7 @@ class TopController extends AppController {
       'contain' => ['Users']
     ];
 
-    // ログインユーザーが好き登録している動画一覧を取得する（「好き」ボタンの表示切り替えに使用）
-    if (isset($_SESSION['name'])) {
-      $user_like_movies = $this->MoviesUsers->find()->where(['user_id'=>$_SESSION['id']])->select(['movie_id'])->all()->toArray();
-      $login_user_like_movies = [];
-      foreach ($user_like_movies as $item) {
-        $login_user_like_movies[] = $item->movie_id;
-      }
-      // ログイン済みの場合のみ、「好き」と「好き解除」ボタンの表示分岐処理を行う（そのための準備）
-      $this->set('login_user_like_movies',$login_user_like_movies);
-    } else {
-      $this->set('login_user_like_movies',[]);
-    }
+    $this->getLoginUserLikeMovies->getLoginuserLikeMovies();
   }
 
   public function index() {
@@ -70,7 +58,7 @@ class TopController extends AppController {
     }
 
     // チェックボックスにチェックが付いている項目数に応じて別々の検索条件で動画と動画数を取得する
-    $this->paginate = $this->__otherCheck($data,$this->paginate);
+    $this->paginate = $this->__orderDesign($data,$this->paginate);
     if (count($checkData) === 0) {
       $count = $this->Movies->find('all')->count();
       $movies = $this->paginate($this->Movies);
@@ -109,7 +97,7 @@ class TopController extends AppController {
 
 
     $this->set(compact('groupNameArray','movies','count','groupName'));
-    $this->set('otherInfo',$this->__getOtherInfo($data));
+    $this->set('otherInfo',$this->__setOrderSubTitle($data));
     $this->render('index');
   }
 
@@ -134,7 +122,7 @@ class TopController extends AppController {
   }
 
 
-  private function __otherCheck($data,$paginate) {
+  private function __orderDesign($data,$paginate) {
     switch ($data['other-search']) {
       case 'viewCount':
         $paginate['order'] = ['view_count' => 'desc'];
@@ -152,7 +140,7 @@ class TopController extends AppController {
     return $paginate;
   }
 
-  private function __getOtherInfo($data) {
+  private function __setOrderSubTitle($data) {
     switch ($data['other-search']) {
       case 'viewCount':
         $otherInfo = '再生回数が多い順';
@@ -169,4 +157,5 @@ class TopController extends AppController {
     }
     return $otherInfo;
   }
+
 }

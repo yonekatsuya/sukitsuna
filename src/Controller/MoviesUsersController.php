@@ -8,7 +8,6 @@ class MoviesUsersController extends AppController {
   public function initialize() {
     parent::initialize();
     $this->name = 'MoviesUsers';
-    session_start();
 
     $this->autoRender = false;
 
@@ -16,17 +15,7 @@ class MoviesUsersController extends AppController {
     $this->Movies = TableRegistry::get('movies');
     $this->Users = TableRegistry::get('users');
 
-    // ログインユーザーが好き登録している動画一覧を取得する（「好き」ボタンの表示切り替えに使用）
-    if (isset($_SESSION['name'])) {
-      $user_like_movies = $this->MoviesUsers->find()->where(['user_id'=>$_SESSION['id']])->select(['movie_id'])->all()->toArray();
-      $login_user_like_movies = [];
-      foreach ($user_like_movies as $item) {
-        $login_user_like_movies[] = $item->movie_id;
-      }
-      $this->set(compact('login_user_like_movies'));
-    } else {
-      $this->set('login_user_like_movies',[]);
-    }
+    $this->getLoginUserLikeMovies->getLoginuserLikeMovies();
   }
 
   // 「好き」ボタン押下時の処理（moviesusersテーブルに「誰がどの動画を好き登録したか」という情報を保存）

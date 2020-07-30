@@ -1,6 +1,9 @@
 <div class="row top-title my-5 justify-content-center">
   <?php if (isset($all)) : ?>
-    <h3>全ての動画一覧（<span class="title-hit-num"><?= $count ?></span>件）</h3>
+    <div>
+      <h3>全ての動画一覧（<span class="title-hit-num"><?= $count ?></span>件）</h3>
+      <h5 class="text-muted text-center"><?= $otherInfo ?></h5>
+    </div>
   <?php else : ?>
     <div>
       <?php if (!empty($keyword)) : ?>

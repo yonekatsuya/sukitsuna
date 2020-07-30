@@ -9,23 +9,11 @@ class AdminController extends AppController {
     $this->name = 'Admin';
     $this->viewBuilder()->setLayout('Main');
     parent::initialize();
-    session_start();
 
     $this->Movies = TableRegistry::get('movies');
     $this->MoviesUsers = TableRegistry::get('movies_users');
 
-    // ログインユーザーが好き登録している動画一覧を取得する（「好き」ボタンの表示切り替えに使用）
-    if (isset($_SESSION['name'])) {
-      $login_id = $_SESSION['id'];
-      $entities = $this->MoviesUsers->find()->where(['user_id'=>$login_id])->select(['movie_id'])->all()->toArray();
-      $login_user_like_movies = [];
-      foreach ($entities as $item) {
-        $login_user_like_movies[] = $item->movie_id;
-      }
-      $this->set(compact('login_user_like_movies'));
-    } else {
-      $this->set('login_user_like_movies',[]);
-    }
+    $this->getLoginUserLikeMovies->getLoginuserLikeMovies();
   }
 
   public function index() {
@@ -36,5 +24,49 @@ class AdminController extends AppController {
     } else {
       $this->redirect(['controller'=>'top','action'=>'index']);
     }
+  }
+
+  public function csv() {
+    $movies = $this->Movies->find()->select(['title','group_name','view_count','like_count','dislike_count','comment_count'])->toArray();
+    $header = ['タイトル','グループ名','再生数','高評価数','低評価数','コメント数'];
+    $datas = [];
+    foreach ($movies as $movie) {
+      $datas[] = [
+        $movie->title,
+        $movie->group_name,
+        $movie->view_count,
+        $movie->like_count,
+        $movie->dislike_count,
+        $movie->comment_count
+      ];
+    }
+
+    $temp_dir = sys_get_temp_dir();
+    $temp_csv_file_path = tempnam($temp_dir,'temp_csv');
+
+    $fp = fopen($temp_csv_file_path, 'w');
+    fputcsv($fp,$header);
+
+    foreach ($datas as $data) {
+      $row = [
+        $data[0],
+        $data[1],
+        $data[2],
+        $data[3],
+        $data[4],
+        $data[5],
+      ];
+      fputcsv($fp,$data);
+    }
+    fclose($fp);
+
+    $this->response = $this->response->withType('csv');
+    return $this->response->withFile(
+      $temp_csv_file_path,
+      [
+        'download' => true,
+        'name' => 'hoge.csv'
+      ]
+    );
   }
 }

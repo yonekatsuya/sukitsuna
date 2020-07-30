@@ -41,7 +41,7 @@
           <!-- 「詳細」ボタン押下時プロフィールモーダルに渡す用のhidden一覧 -->
           <input type="hidden" class="like-user-hidden-id" value="<?= $user->id ?>">
           <input type="hidden" class="like-user-hidden-profile-image-url" value="<?= $user->profile_image_url ?>">
-          <input type="hidden" class="like-user-hidden-screen-name" value="<?= $user->screen_name ?>">
+          <input type="hidden" class="like-user-hidden-screen-name" value="https://twitter.com/<?= $user->screen_name ?>">
           <input type="hidden" class="like-user-hidden-name" value="<?= $user->name ?>">
           <input type="hidden" class="like-user-hidden-location" value="<?= $user->location ?>">
           <input type="hidden" class="like-user-hidden-description" value="<?= $user->description ?>">

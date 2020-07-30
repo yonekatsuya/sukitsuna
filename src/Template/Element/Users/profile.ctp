@@ -36,7 +36,11 @@
         </div>
         <div class="twitter-user-info my-4">
           <div class="font-weight-bold border-bottom border-success">リンク</div>
-          <div class="info mt-2"><?= $this->Html->link($_SESSION['other_url'],$_SESSION['other_url'],['target'=>'_blank']) ?></div>
+          <?php if (isset($_SESSION['other_url'])) : ?>
+            <div class="info mt-2"><?= $this->Html->link($_SESSION['other_url'],$_SESSION['other_url'],['target'=>'_blank']) ?></div>
+          <?php else : ?>
+            <div class="info mt-2"></div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
